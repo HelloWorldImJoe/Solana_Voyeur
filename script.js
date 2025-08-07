@@ -622,14 +622,12 @@ async function checkPrice() {
                 console.error('自动买入失败:', error);
                 showNotification(`自动买入失败: ${error.message}`, 'error');
             }
-        } else {
-            // 如果不自动交易，发送浏览器通知
-            sendBrowserNotification(
-                '买入信号提醒',
-                message,
-                '/favicon.ico'
-            );
         }
+        sendBrowserNotification(
+            '买入信号提醒',
+            message,
+            '/favicon.ico'
+        );
     }
 
     if (monitorSell && sellPrice && newPrice >= sellPrice) {
@@ -648,14 +646,12 @@ async function checkPrice() {
                 console.error('自动卖出失败:', error);
                 showNotification(`自动卖出失败: ${error.message}`, 'error');
             }
-        } else {
-            // 如果不自动交易，发送浏览器通知
-            sendBrowserNotification(
-                '卖出信号提醒',
-                message,
-                '/favicon.ico'
-            );
         }
+        sendBrowserNotification(
+            '卖出信号提醒',
+            message,
+            '/favicon.ico'
+        );
     }
 }
 
