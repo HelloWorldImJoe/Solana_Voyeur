@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solana 代币监控器</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🚀 Solana 代币监控器</h1>
+            <p>实时监控代币价格，智能交易信号</p>
+        </header>
+
+        <main class="main-content">
+            <!-- 全局搜索框 -->
+            <div class="global-search">
+                <div class="search-container">
+                    <h3 class="search-title">搜索代币</h3>
+                    <input type="text" id="tokenAddress" placeholder="输入代币地址进行查询..." value="9raUVuzeWUk53co63M4WXLWPWE4Xc6Lpn7RS9dnkpump" />
+                    <button id="searchBtn" class="btn btn-primary">查询</button>
+                    <button id="connectWallet" class="btn btn-secondary">连接Phantom钱包</button>
+                </div>
+            </div>
+            
+            <div class="layout-container">
+                <!-- 顶部：代币信息和价格趋势图 -->
+                <section class="top-panel">
+                    <!-- 代币信息显示区域 -->
+                    <div class="card">
+                        <h2>代币信息</h2>
+                        <div id="tokenInfo" class="hidden">
+                            <div class="price-row">
+                                <span class="price-label">当前价格:</span>
+                                <span id="currentPrice" class="price-value">$0.00</span>
+                            </div>
+                            <div class="change-row">
+                                <span class="change-label">24h变化:</span>
+                                <span id="priceChange24h" class="change-value">-</span>
+                            </div>
+                            <div class="update-row">
+                                <span class="update-label">更新时间:</span>
+                                <span id="lastUpdated" class="update-value">-</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h2>价格趋势图</h2>
+                        <div class="chart-controls">
+                            <div class="time-range-selector">
+                                <label for="timeRange">时间范围:</label>
+                                <select id="timeRange" class="form-select">
+                                    <option value="1H" selected>1小时</option>
+                                    <option value="1D">1天</option>
+                                    <option value="1M">1个月</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="priceChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+                <!-- 底部：功能区域 -->
+                <section class="bottom-panel">
+                    <!-- 监控设置区域 -->
+                    <div class="card">
+                        <h2>价格监控设置</h2>
+                        <div class="monitor-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="buyPrice">买入价格 ($)</label>
+                                    <input type="number" id="buyPrice" step="0.000001" placeholder="0.00" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="sellPrice">卖出价格 ($)</label>
+                                    <input type="number" id="sellPrice" step="0.000001" placeholder="0.00" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="buyAmount">买入数量 (SOL)</label>
+                                    <input type="number" id="buyAmount" step="0.01" placeholder="0.01" value="0.01" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="sellAmount">卖出数量 (代币)</label>
+                                    <input type="number" id="sellAmount" step="1" placeholder="100" value="100" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>监控类型</label>
+                                    <div class="monitor-type-selector">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="monitorBuy" checked />
+                                            <span>买入监控</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="monitorSell" checked />
+                                            <span>卖出监控</span>
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="autoTrade" />
+                                            <span>自动交易</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="checkInterval">检查频率 (秒)</label>
+                                    <input type="number" id="checkInterval" min="2" value="2" />
+                                </div>
+                                <div class="form-group">
+                                    <button id="startMonitor" class="btn btn-success">开始监控</button>
+                                    <button id="stopMonitor" class="btn btn-danger hidden">停止监控</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="monitorStatus" class="monitor-status hidden">
+                            <div class="status-indicator">
+                                <span class="status-dot"></span>
+                                <span id="statusText">监控中...</span>
+                            </div>
+                            <div id="lastCheck" class="last-check">
+                                最后检查: <span id="lastCheckTime">-</span> · 价格: <span id="lastCheckPrice">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 打赏区域 -->
+                    <div class="card tip-compact">
+                        <h2>打赏功能</h2>
+                        <div class="tip-form-compact">
+                            <div class="tip-row">
+                                <div class="form-group">
+                                    <label for="tipToken">打赏币种</label>
+                                    <select id="tipToken" class="form-select">
+                                        <option value="V2EX">V2EX币 (V2EX)</option>
+                                        <option value="SOL">SOL币 (SOL)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tipAmount">打赏数量</label>
+                                    <input type="number" id="tipAmount" step="0.01" placeholder="0.001" value="50" />
+                                </div>
+                            </div>
+                            <div class="tip-row-full">
+                                <div class="form-group">
+                                    <label for="recipientAddress">接收地址</label>
+                                    <input type="text" id="recipientAddress" placeholder="输入接收者钱包地址..." value="Dz9pHt2CFNWwgDm2JG85yBFHfbJ5noMA5k13ZvbVeNGF" />
+                                </div>
+                            </div>
+                            <div class="tip-row-full">
+                                <div class="form-group">
+                                    <button id="sendTip" class="btn btn-primary" disabled>发送打赏</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tipStatus" class="tip-status hidden">
+                            <p id="tipMessage"></p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- 通知区域 -->
+            <div id="notifications" class="notifications"></div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
