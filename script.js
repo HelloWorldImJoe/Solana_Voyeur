@@ -14,7 +14,7 @@ const V2EX_TOKEN_MINT = "9raUVuzeWUk53co63M4WXLWPWE4Xc6Lpn7RS9dnkpump";
 const TOKEN_PROGRAM_ID = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
 const ASSOCIATED_TOKEN_PROGRAM_ID = "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL";
 // 默认接收地址（可以修改）
-const DEFAULT_RECIPIENT_ADDRESS = "Dz9pHt2CFNWwgDm2JG85yBFHfbJ5noMA5k13ZvbVeNGF";
+const DEFAULT_RECIPIENT_ADDRESS = "v2ex_joejoejoe.sol";
 
 // SOL常量
 const LAMPORTS_PER_SOL = 1000000000;
@@ -112,9 +112,9 @@ function initializeEventListeners() {
 function updateTipAmount() {
     const selectedToken = elements.tipToken.value;
     if (selectedToken === 'V2EX') {
-        elements.tipAmount.value = '50';
+        elements.tipAmount.value = '10';
     } else if (selectedToken === 'SOL') {
-        elements.tipAmount.value = '0.005';
+        elements.tipAmount.value = '0.002';
     }
 }
 
@@ -842,7 +842,7 @@ async function sendTip() {
         return;
     }
 
-    const recipientAddress = elements.recipientAddress.value.trim();
+    let recipientAddress = elements.recipientAddress.value.trim();
     const tipAmount = parseFloat(elements.tipAmount.value);
     const tipToken = elements.tipToken.value;
 
@@ -856,13 +856,16 @@ async function sendTip() {
         return;
     }
 
-    // 验证Solana地址格式
-    if (!isValidSolanaAddress(recipientAddress)) {
-        showNotification('请输入有效的Solana地址', 'error');
-        return;
-    }
-
     try {
+        // 解析.sol域名（如果需要）
+        recipientAddress = await resolveSolDomain(recipientAddress);
+        
+        // 验证Solana地址格式
+        if (!isValidSolanaAddress(recipientAddress)) {
+            showNotification('请输入有效的Solana地址', 'error');
+            return;
+        }
+
         elements.sendTip.innerHTML = '<span class="loading"></span> 发送中...';
         elements.sendTip.disabled = true;
 
@@ -1113,8 +1116,32 @@ function formatAddress(address) {
 
 // 工具函数：验证Solana地址
 function isValidSolanaAddress(address) {
+    if (address.endsWith('.sol')) {
+        return true;
+    }
     return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(address);
 }
+
+// 添加域名解析函数
+async function resolveSolDomain(address) {
+    if (address.endsWith('.sol')) {
+        try {
+            // 使用Solana名称服务API解析域名
+            const response = await fetch(`https://sns-sdk-proxy.bonfida.workers.dev/resolve/${address}`);
+            const data = await response.json();
+            if (data.result) {
+                return data.result;
+            } else {
+                throw new Error('域名解析失败');
+            }
+        } catch (error) {
+            console.error('域名解析错误:', error);
+            throw new Error(`域名解析失败: ${error.message}`);
+        }
+    }
+    return address;
+}
+
 
 // 请求浏览器通知权限
 async function requestNotificationPermission() {
