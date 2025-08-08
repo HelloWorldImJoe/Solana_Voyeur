@@ -78,11 +78,11 @@ body {
 }
 
 .top-panel .card {
-    min-height: 400px;
+    min-height: 535px;
 }
 
 .bottom-panel .card {
-    min-height: 488px;
+    min-height: 585px;
 }
 
 .card:hover {
@@ -336,7 +336,7 @@ body {
 }
 
 .chart-container {
-    height: 200px;
+    height: 350px;
     margin-top: 10px;
     position: relative;
 }
@@ -564,7 +564,28 @@ body {
     }
     
     .chart-container {
-        height: 300px;
+        height: 400px;
+    }
+
+    .search-input-row {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+
+    .search-input-row input {
+        min-width: auto;
+        width: 100%;
+    }
+
+    .search-examples {
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .example-btn {
+        padding: 4px 8px;
+        font-size: 0.75rem;
     }
 }
 
@@ -682,7 +703,7 @@ body {
     border-bottom: none;
 }
 
-.token-info {
+.token-item-info {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -737,8 +758,8 @@ body {
 } 
 
 .global-search {
-    margin-bottom: 30px;
-    padding: 15px;
+    margin-bottom: 10px;
+    padding: 10px;
     background: rgba(255, 255, 255, 0.95);
     border-radius: 20px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
@@ -794,24 +815,11 @@ body {
     margin: 0 auto;
     align-items: center;
     flex-wrap: wrap;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
-.search-container input {
-    flex: 2;
-    padding: 15px 20px;
-    border: 2px solid #e0e0e0;
-    border-radius: 15px;
-    font-size: 16px;
-    transition: all 0.3s ease;
-    background: white;
-}
 
-.search-container input:focus {
-    outline: none;
-    border-color: #3498db;
-    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-    transform: translateY(-2px);
-}
 
 .search-container .btn {
     padding: 15px 25px;
@@ -821,12 +829,52 @@ body {
     letter-spacing: 0.5px;
     transition: all 0.3s ease;
     white-space: nowrap;
+    margin-right: 10px;
 }
 
 .search-container .btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
 } 
+
+.search-examples {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+
+.example-label {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.example-btn {
+    background: rgba(52, 152, 219, 0.1);
+    border: 1px solid rgba(52, 152, 219, 0.3);
+    color: #3498db;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.example-btn:hover {
+    background: rgba(52, 152, 219, 0.2);
+    border-color: rgba(52, 152, 219, 0.5);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+}
+
+.example-btn:active {
+    transform: translateY(0);
+}
 
 .top-row {
     display: grid;
@@ -886,129 +934,935 @@ body {
 .tip-row-full .btn {
     width: 100%;
     margin-top: 10px;
-} 
-
-.token-info {
-    background: #fff;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    margin-bottom: 20px;
 }
 
-.token-header {
+/* 钱包按钮组样式 */
+.wallet-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.wallet-buttons .btn {
+    width: 100%;
+    margin-top: 0;
+}
+
+/* 监控控制按钮样式 */
+.monitor-control-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.monitor-control-buttons .btn {
+    flex: 1;
+    margin: 0;
+}
+
+/* 响应式样式 */
+@media (max-width: 768px) {
+    .monitor-control-buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .monitor-control-buttons .btn {
+        width: 100%;
+    }
+}
+
+/* 钱包信息显示区域样式 */
+.wallet-info-display {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+}
+
+.wallet-info-display:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.wallet-info-header {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #eee;
+    gap: 8px;
+    margin-bottom: 12px;
+    font-weight: 600;
+    font-size: 1.1rem;
 }
 
-.token-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
+.wallet-icon {
+    font-size: 1.2rem;
+}
+
+.wallet-status-text {
+    color: #ffffff;
+}
+
+.wallet-public-key {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.public-key-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+}
+
+.public-key-value {
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    word-break: break-all;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* 钱包信息模态框样式 */
+.wallet-info-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.wallet-info-section {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+}
+
+.wallet-info-section h4 {
+    margin: 0 0 16px 0;
+    color: #2c3e50;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 8px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: 500;
+    color: #6c757d;
+    min-width: 120px;
+}
+
+.info-value {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    color: #2c3e50;
+    background: #ffffff;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    word-break: break-all;
+    text-align: right;
+    flex: 1;
+    margin-left: 12px;
+}
+
+.info-value.connected {
+    color: #28a745;
+    background: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.info-value.disconnected {
+    color: #dc3545;
+    background: #f8d7da;
+    border-color: #f5c6cb;
+} 
+
+
+
+/* 代币信息容器样式 */
+.token-info-container {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(52, 152, 219, 0.1);
+  transition: all 0.3s ease;
+}
+
+.token-info-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* 代币头部区域 */
+.token-header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(52, 152, 219, 0.1);
+}
+
+.token-basic-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.token-logo-container {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.token-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 2px solid rgba(52, 152, 219, 0.2);
+  transition: all 0.3s ease;
+}
+
+.token-logo:hover {
+  transform: scale(1.05);
+  border-color: rgba(52, 152, 219, 0.4);
+}
+
+.token-text-info {
+  flex: 1;
+}
+
+.token-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 4px 0;
+  line-height: 1.2;
+}
+
+.token-symbol {
+  font-size: 14px;
+  color: #7f8c8d;
+  margin: 0 0 8px 0;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.token-address {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.address-label {
+  color: #95a5a6;
+  font-weight: 500;
+}
+
+.address-text {
+  color: #3498db;
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  background: rgba(52, 152, 219, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+/* 状态徽章 */
+.token-status {
+  flex-shrink: 0;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: white;
+  animation: pulse 2s infinite;
+}
+
+/* 价格区域 */
+.price-section {
+  margin-bottom: 20px;
+}
+
+.current-price-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 12px;
+  border: 1px solid rgba(52, 152, 219, 0.1);
+}
+
+.price-main {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.price-currency {
+  font-size: 18px;
+  font-weight: 600;
+  color: #7f8c8d;
+}
+
+.price-value {
+  font-size: 32px;
+  font-weight: 800;
+  color: #2c3e50;
+  line-height: 1;
+}
+
+.price-change {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.change-indicator {
+  font-size: 16px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(52, 152, 219, 0.1);
+  color: #3498db;
+}
+
+.change-indicator.price-up {
+  background: rgba(46, 204, 113, 0.1);
+  color: #27ae60;
+}
+
+.change-indicator.price-down {
+  background: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+}
+
+.change-period {
+  font-size: 10px;
+  color: #95a5a6;
+  font-weight: 500;
+}
+
+/* 市场数据网格 */
+.market-data-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.market-data-item {
+  background: white;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(52, 152, 219, 0.1);
+  transition: all 0.3s ease;
+}
+
+.market-data-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: rgba(52, 152, 219, 0.2);
+}
+
+.data-label {
+  font-size: 12px;
+  color: #7f8c8d;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.data-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2c3e50;
+  line-height: 1.2;
+}
+
+/* 时间信息 */
+.time-info {
+  padding-top: 16px;
+  border-top: 1px solid rgba(52, 152, 219, 0.1);
+}
+
+.last-updated {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.update-label {
+  color: #95a5a6;
+  font-weight: 500;
+}
+
+.update-time {
+  color: #7f8c8d;
+  font-weight: 600;
+}
+
+/* 加载状态 */
+.token-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+.loading-text {
+  color: #7f8c8d;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* 空状态 */
+.token-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  color: #95a5a6;
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+
+.empty-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #7f8c8d;
+  margin: 0 0 8px 0;
+}
+
+.empty-description {
+  font-size: 14px;
+  color: #bdc3c7;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .token-header-section {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  
+  .token-status {
+    align-self: flex-end;
+  }
+  
+  .current-price-display {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  
+  .price-main {
+    align-self: flex-start;
+  }
+  
+  .price-change {
+    align-self: flex-end;
+  }
+  
+  .market-data-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .price-value {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .token-info-container {
+    padding: 20px;
+  }
+  
+  .token-basic-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .token-logo {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .price-value {
+    font-size: 24px;
+  }
+  
+  .market-data-item {
+    padding: 12px;
+  }
+
+  .search-input-row {
+    gap: 8px;
+  }
+
+  .search-input-group {
+    flex-direction: column;
+    gap: 8px;
+    min-width: 300px;
+  }
+
+  .search-input-group input {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+
+  .search-input-group .btn {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+
+  .search-examples {
+    gap: 4px;
+  }
+
+  .example-btn {
+    padding: 3px 6px;
+    font-size: 0.7rem;
+  }
+
+  .example-label {
+    font-size: 0.75rem;
+  }
+}
+
+.search-input-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.search-input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 800px;
+}
+
+.search-input-group input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+    color: #333;
+}
+
+.search-input-group .btn {
+    white-space: nowrap;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.search-input-group .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.search-input-row input {
+    flex: 1;
+    min-width: 300px;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+    color: #333;
+}
+
+.search-input-row input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+/* 模态框样式 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 15px;
+    padding: 0;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
     overflow: hidden;
-    margin-right: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 15px 15px 0 0;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.modal-close:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.modal-description {
+    margin-bottom: 20px;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.search-results-list {
+    max-height: 400px;
+    overflow-y: auto;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+.search-result-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background-color: #f8f9fa;
+}
+
+.search-result-item.selected {
+    background-color: #e3f2fd;
+    border-left: 4px solid #3498db;
+}
+
+.search-result-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 15px;
     background: #f0f0f0;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 18px;
+    color: #666;
+    object-fit: cover;
     flex-shrink: 0;
 }
 
-.token-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.search-result-info {
+    flex: 1;
 }
 
-.token-details h2 {
-    margin: 0 0 4px 0;
-    font-size: 20px;
+.search-result-name {
     font-weight: 600;
     color: #333;
-}
-
-.token-symbol {
-    margin: 0;
-    font-size: 14px;
-    color: #666;
-}
-
-.price-info {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.current-price-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.price-label {
-    font-size: 16px;
-    color: #666;
-}
-
-.current-price {
-    font-size: 28px;
-    font-weight: 700;
-    color: #333;
-}
-
-.price-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 16px;
-}
-
-.stat-item {
-    display: flex;
-    flex-direction: column;
-}
-
-.stat-label {
-    font-size: 14px;
-    color: #666;
     margin-bottom: 4px;
+    font-size: 1rem;
 }
 
-.change-value {
-    font-size: 16px;
+.search-result-symbol {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 2px;
+}
+
+.search-result-address {
+    color: #999;
+    font-size: 0.8rem;
+    font-family: monospace;
+}
+
+.search-result-price {
+    text-align: right;
+    margin-left: 15px;
+}
+
+.search-result-price-value {
     font-weight: 600;
+    color: #333;
+    font-size: 1rem;
 }
 
-.price-up {
+.search-result-price-change {
+    font-size: 0.85rem;
+    margin-top: 2px;
+}
+
+.search-result-price-change.positive {
     color: #27ae60;
 }
 
-.price-down {
+.search-result-price-change.negative {
     color: #e74c3c;
 }
 
+/* 滚动条样式 */
+.search-results-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.search-results-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.search-results-list::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.search-results-list::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* 响应式设计 */
 @media (max-width: 768px) {
-    .token-header {
-        flex-direction: row;
+    .modal-content {
+        width: 95%;
+        margin: 20px;
     }
     
-    .current-price {
-        font-size: 24px;
+    .modal-header {
+        padding: 15px 20px;
     }
     
-    .price-stats {
-        grid-template-columns: 1fr 1fr;
+    .modal-header h3 {
+        font-size: 1.1rem;
+    }
+    
+    .modal-body {
+        padding: 20px;
+    }
+    
+    .search-result-item {
+        padding: 12px 15px;
+    }
+    
+    .search-result-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+        margin-right: 12px;
+    }
+    
+    .search-result-name {
+        font-size: 0.95rem;
+    }
+    
+    .search-result-symbol {
+        font-size: 0.85rem;
+    }
+    
+    .search-result-address {
+        font-size: 0.75rem;
     }
 }
 
-@media (max-width: 480px) {
-    .price-stats {
-        grid-template-columns: 1fr;
+/* 设置管理按钮样式 */
+.settings-control-buttons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: rgba(255, 193, 7, 0.1);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    width: 100%;
+}
+
+.settings-control-buttons .btn {
+    flex-shrink: 0;
+    padding: 10px 20px;
+    font-size: 14px;
+}
+
+.settings-info {
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
+    flex: 1;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ffc107, #ff9800);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+}
+
+.btn-warning:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(255, 193, 7, 0.3);
+}
+
+@media (max-width: 768px) {
+    .settings-control-buttons {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
     }
     
-    .current-price {
-        font-size: 20px;
+    .settings-info {
+        text-align: center;
+        order: -1;
+    }
+    
+    .form-row .settings-control-buttons {
+        grid-column: 1 / -1;
     }
 }

@@ -40,16 +40,26 @@
         <div class="global-search">
           <div class="search-container">
             <h3 class="search-title">搜索代币</h3>
-            <input
-              type="text"
-              id="tokenAddress"
-              placeholder="输入代币地址进行查询..."
-              value="9raUVuzeWUk53co63M4WXLWPWE4Xc6Lpn7RS9dnkpump"
-            />
-            <button id="searchBtn" class="btn btn-primary">查询</button>
-            <button id="connectWallet" class="btn btn-secondary">
-              连接Phantom钱包
-            </button>
+            <div class="search-input-row">
+              <div class="search-input-group">
+                <input
+                  type="text"
+                  id="tokenAddress"
+                  placeholder="输入代币地址或符号进行查询..."
+                  value=""
+                />
+                <button id="searchBtn" class="btn btn-primary">查询</button>
+              </div>
+              <div class="search-examples">
+                <span class="example-label">示例:</span>
+                <button class="example-btn" onclick="searchExample('V2EX')">V2EX</button>
+                <button class="example-btn" onclick="searchExample('MB')">MB</button>
+                <button class="example-btn" onclick="searchExample('USDC')">USDC</button>
+                <button class="example-btn" onclick="searchExample('SNS')">SNS</button>
+                <button class="example-btn" onclick="searchExample('BONK')">BONK</button>
+                <button class="example-btn" onclick="searchExample('PUMP')">PUMP</button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -59,47 +69,82 @@
             <!-- 代币信息显示区域 -->
             <div class="card">
               <h2>代币信息</h2>
-              <div id="tokenInfo" class="token-info hidden">
-                <div class="token-header">
-                  <div>
-                    <img
-                      id="tokenLogo"
-                      class="token-icon"
-                      src=""
-                      alt="Token Logo"
-                      onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iMTYiIGZpbGw9IiNGMEYwRjAiLz4KPHBhdGggZD0iTTIxIDE0TDE3IDEwTDE1IDhMMTIgOEw5IDEwTDUgMTRMNSAxOEw5IDIyTDEyIDI0TDE0IDI2TDE3IDI0TDE5IDIyTDIzIDE4TDIzIDE0TDIxIDE0Wk0xOSAxOEwxNyAxNkwxNCAxNkwxNiAxOEwxOSAxOFoiIHN0cm9rZT0iIzM0OTg5YiIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KPC9zdmc+'"
-                    />
+              <div id="tokenInfo" class="token-info-container hidden">
+                <!-- 代币头部信息 -->
+                <div class="token-header-section">
+                  <div class="token-basic-info">
+                    <div class="token-logo-container">
+                      <img
+                        id="tokenLogo"
+                        class="token-logo"
+                        src=""
+                        alt="Token Logo"
+                        onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iMTYiIGZpbGw9IiNGMEYwRjAiLz4KPHBhdGggZD0iTTIxIDE0TDE3IDEwTDE1IDhMMTIgOEw5IDEwTDUgMTRMNSAxOEw5IDIyTDEyIDI0TDE0IDI2TDE3IDI0TDE5IDIyTDIzIDE4TDIzIDE0TDIxIDE0Wk0xOSAxOEwxNyAxNkwxNCAxNkwxNiAxOEwxOSAxOFoiIHN0cm9rZT0iIzM0OTg5YiIgc3Ryb2tlLXdpZHRoPSIxLjUiLz4KPC9zdmc+'"
+                      />
+                    </div>
+                    <div class="token-text-info">
+                      <h3 id="tokenName" class="token-name">Token Name</h3>
+                      <p id="tokenSymbol" class="token-symbol">SYMBOL</p>
+                      <div class="token-address">
+                        <span class="address-label">地址:</span>
+                        <span id="tokenAddressDisplay" class="address-text">-</span>
+                      </div>
+                    </div>
                   </div>
-                  <div class="token-details">
-                    <h2 id="tokenName">Token Name</h2>
-                    <p id="tokenSymbol" class="token-symbol">SYMBOL</p>
+                  <div class="token-status">
+                    <div class="status-badge">
+                      <span class="status-dot"></span>
+                      <span class="status-text">在线</span>
+                    </div>
                   </div>
                 </div>
 
-                <div class="price-info">
-                  <div class="current-price-container">
-                    <span class="price-label">当前价格:      </span>
-                    <span id="currentPrice" class="current-price">$0.00</span>
+                <!-- 价格信息区域 -->
+                <div class="price-section">
+                  <div class="current-price-display">
+                    <div class="price-main">
+                      <span class="price-currency">$</span>
+                      <span id="currentPrice" class="price-value">0.00</span>
+                    </div>
+                    <div class="price-change">
+                      <span id="priceChange24h" class="change-indicator">-</span>
+                      <span class="change-period">24h</span>
+                    </div>
                   </div>
-                  <div class="stat-item" id="marketCapContainer">
-                      <span class="stat-label">市值:      </span>
-                      <span id="marketCap">-</span>
+                  
+                  <!-- 市场数据网格 -->
+                  <div class="market-data-grid">
+                    <div class="market-data-item">
+                      <div class="data-label">市值</div>
+                      <div id="marketCap" class="data-value">-</div>
                     </div>
-                    <div class="stat-item" id="volume24hContainer">
-                      <span class="stat-label">24小时交易量:      </span>
-                      <span id="volume24h">-</span>
-                    </div>
-                  <div class="price-stats">
-                    <div class="stat-item">
-                      <span class="stat-label">24小时变化:      </span>
-                      <span id="priceChange24h" class="change-value">-</span>
-                    </div>
-                    <div class="stat-item">
-                      <span class="stat-label">最后更新:      </span>
-                      <span id="lastUpdated">-</span>
+                    <div class="market-data-item">
+                      <div class="data-label">24h交易量</div>
+                      <div id="volume24h" class="data-value">-</div>
                     </div>
                   </div>
                 </div>
+
+                <!-- 时间信息 -->
+                <div class="time-info">
+                  <div class="last-updated">
+                    <span class="update-label">最后更新:</span>
+                    <span id="lastUpdated" class="update-time">-</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 加载状态 -->
+              <div id="tokenLoading" class="token-loading hidden">
+                <div class="loading-spinner"></div>
+                <p class="loading-text">正在获取代币信息...</p>
+              </div>
+              
+              <!-- 空状态 -->
+              <div id="tokenEmpty" class="token-empty">
+                <div class="empty-icon">🔍</div>
+                <h3 class="empty-title">搜索代币</h3>
+                <p class="empty-description">输入代币地址或符号开始监控价格变化</p>
               </div>
             </div>
             <div class="card">
@@ -157,6 +202,18 @@
                     />
                   </div>
                   <div class="form-group">
+                    <label for="buyTimes">买入次数</label>
+                    <input
+                      type="number"
+                      id="buyTimes"
+                      min="1"
+                      placeholder="1"
+                      value="1"
+                    />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
                     <label for="sellAmount">卖出数量 (代币)</label>
                     <input
                       type="number"
@@ -164,6 +221,16 @@
                       step="1"
                       placeholder="100"
                       value="100"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="sellTimes">卖出次数</label>
+                    <input
+                      type="number"
+                      id="sellTimes"
+                      min="1"
+                      placeholder="1"
+                      value="1"
                     />
                   </div>
                 </div>
@@ -192,14 +259,23 @@
                     <input type="number" id="checkInterval" min="2" value="2" />
                   </div>
                   <div class="form-group">
-                    <button id="startMonitor" class="btn btn-success">
-                      开始监控
-                    </button>
-                    <button id="stopMonitor" class="btn btn-danger hidden">
-                      停止监控
-                    </button>
+                    <label for="signalCooldown">信号冷却时间 (秒)</label>
+                    <input type="number" id="signalCooldown" min="10" value="30" />
                   </div>
                 </div>
+
+                <!-- 设置管理按钮 -->
+                <div class="form-row">
+                  <div class="form-group">
+                    <div class="settings-control-buttons">
+                      <button onclick="clearUserSettings()" class="btn btn-warning" title="清除所有保存的设置">
+                        清除设置
+                      </button>
+                      <span class="settings-info">设置会自动保存到本地</span>
+                    </div>
+                  </div>
+                </div>
+
               </div>
               <div id="monitorStatus" class="monitor-status hidden">
                 <div class="status-indicator">
@@ -213,20 +289,33 @@
               </div>
             </div>
 
-            <!-- 打赏区域 -->
+            <!-- 其他区域 -->
             <div class="card tip-compact">
-              <h2>打赏功能</h2>
+              <h2>其他功能</h2>
+              
+              <!-- 钱包信息显示区域 -->
+              <div id="walletInfoDisplay" class="wallet-info-display hidden">
+                <div class="wallet-info-header">
+                  <span class="wallet-icon">💰</span>
+                  <span class="wallet-status-text">钱包已连接</span>
+                </div>
+                <div class="wallet-public-key">
+                  <span class="public-key-label">公钥:</span>
+                  <span id="walletPublicKey" class="public-key-value">-</span>
+                </div>
+              </div>
+              
               <div class="tip-form-compact">
                 <div class="tip-row">
                   <div class="form-group">
-                    <label for="tipToken">打赏币种</label>
+                    <label for="tipToken">发送币种</label>
                     <select id="tipToken" class="form-select">
                       <option value="SOL">SOL币 (SOL)</option>
                       <option value="V2EX">V2EX币 (V2EX)</option>
                     </select>
                   </div>
                   <div class="form-group">
-                    <label for="tipAmount">打赏数量</label>
+                    <label for="tipAmount">发送数量</label>
                     <input
                       type="number"
                       id="tipAmount"
@@ -238,7 +327,7 @@
                 </div>
                 <div class="tip-row-full">
                   <div class="form-group">
-                    <label for="recipientAddress">接收地址</label>
+                    <label for="recipientAddress">接收地址(你测试的代币会发送到这个地址)</label>
                     <input
                       type="text"
                       id="recipientAddress"
@@ -249,11 +338,43 @@
                 </div>
                 <div class="tip-row-full">
                   <div class="form-group">
+                    <button id="showWalletInfo" class="btn btn-success hidden">
+                      查看钱包信息
+                    </button>
                     <button id="sendTip" class="btn btn-primary" disabled>
-                      发送打赏
+                      测试自动交易
                     </button>
                   </div>
                 </div>
+                <div class="tip-row-full">
+                  <div class="form-group">
+                    <div class="wallet-buttons">
+                      <button id="connectWallet" class="btn btn-secondary">
+                        导入钱包
+                      </button>
+                      <button id="importWalletFile" class="btn btn-secondary">
+                        从文件导入钱包
+                      </button>
+                    </div>
+                    <input type="file" id="walletFileInput" accept=".json,.txt" style="display: none;" />
+                  </div>
+                </div>
+                
+                <!-- 监控控制按钮 -->
+                <div class="tip-row-full">
+                  <div class="form-group">
+                    <div class="monitor-control-buttons">
+                      <button id="startMonitor" class="btn btn-success">
+                        开始监控
+                      </button>
+                      <button id="stopMonitor" class="btn btn-danger hidden">
+                        停止监控
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                
+
               </div>
               <div id="tipStatus" class="tip-status hidden">
                 <p id="tipMessage"></p>
@@ -265,6 +386,75 @@
         <!-- 通知区域 -->
         <div id="notifications" class="notifications"></div>
       </main>
+    </div>
+
+    <!-- 搜索结果选择模态框 -->
+    <div id="searchResultsModal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>找到多个匹配的代币</h3>
+          <button class="modal-close" onclick="closeSearchResultsModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p class="modal-description">请选择您要查询的代币：</p>
+          <div id="searchResultsList" class="search-results-list">
+            <!-- 搜索结果将在这里动态生成 -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 钱包信息模态框 -->
+    <div id="walletInfoModal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>💰 钱包信息</h3>
+          <button class="modal-close" onclick="closeWalletInfoModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="wallet-info-content">
+            <div class="wallet-info-section">
+              <h4>基本信息</h4>
+              <div class="info-item">
+                <span class="info-label">公钥地址:</span>
+                <span id="modalPublicKey" class="info-value">-</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">地址长度:</span>
+                <span id="modalAddressLength" class="info-value">-</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">连接状态:</span>
+                <span id="modalConnectionStatus" class="info-value">-</span>
+              </div>
+            </div>
+            
+            <div class="wallet-info-section">
+              <h4>余额信息</h4>
+              <div class="info-item">
+                <span class="info-label">SOL余额:</span>
+                <span id="modalSolBalance" class="info-value">-</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">代币账户数:</span>
+                <span id="modalTokenAccounts" class="info-value">-</span>
+              </div>
+            </div>
+            
+            <div class="wallet-info-section">
+              <h4>网络信息</h4>
+              <div class="info-item">
+                <span class="info-label">网络:</span>
+                <span id="modalNetwork" class="info-value">-</span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">RPC节点:</span>
+                <span id="modalRpcNode" class="info-value">-</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="script.js"></script>

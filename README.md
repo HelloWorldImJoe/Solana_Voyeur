@@ -1,89 +1,173 @@
-# Solana_Voyeur
+# Solana 代币监控器
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+一个现代化的 Solana 代币价格监控和交易工具，提供实时价格监控、智能交易信号和自动交易功能。
 
-一个用于监听Solana区块链上交易和账户活动的监控工具。
+## 🚀 最新更新
 
-## 功能特性
-- 🚨 **事件通知**: 当检测到特定事件时发送浏览器通知
-- 📈 **自动交易**: 支持自动唤起钱包交易
+### 智能符号搜索功能 (v2.1)
 
-## 技术栈
+新增智能符号搜索功能，支持多结果选择和用户友好的界面：
 
-- JavaScript
-- Html
-- Css
-- Solana Web3.js SDK
+#### ✨ 新功能
+- **智能符号搜索**: 支持通过代币符号搜索，自动识别地址和符号
+- **多结果选择**: 当搜索结果大于1时，显示选择列表供用户选择
+- **搜索结果模态框**: 美观的模态框界面，显示代币详细信息
+- **实时价格显示**: 搜索结果中显示当前价格和24小时变化率
+- **代币图标支持**: 显示代币图标，提升视觉体验
+- **键盘快捷键**: 支持ESC键关闭模态框
+- **响应式设计**: 完美适配各种屏幕尺寸
 
-## 安装
+### 代币信息界面重新设计 (v2.0)
 
+我们重新设计了代币信息显示界面，提供更好的用户体验：
+
+#### ✨ 新功能
+- **现代化界面设计**: 采用卡片式布局，更加清晰直观
+- **实时状态指示**: 显示代币在线状态和连接状态
+- **增强的价格显示**: 大字体价格显示，突出重要信息
+- **市场数据网格**: 市值、交易量、流通量等信息一目了然
+- **响应式设计**: 完美适配移动端和桌面端
+- **加载状态**: 优雅的加载动画和空状态提示
+
+#### 🎨 界面特点
+- **代币头部信息**: 代币图标、名称、符号和地址显示
+- **价格信息区域**: 当前价格和24小时变化率
+- **市场数据网格**: 4个关键指标展示
+- **时间信息**: 最后更新时间
+- **状态管理**: 加载、空状态和正常显示状态
+
+#### 📱 响应式支持
+- 桌面端：完整布局，所有信息并排显示
+- 平板端：自适应布局，保持可读性
+- 移动端：垂直布局，优化触摸体验
+
+## 🛠️ 技术特性
+
+- **实时价格监控**: 支持自定义价格阈值和监控频率
+- **智能交易信号**: 基于价格变化的买入/卖出信号
+- **自动交易功能**: 支持自动执行交易操作
+- **钱包集成**: 支持本地钱包导入和管理
+- **图表分析**: 交互式价格趋势图表
+- **通知系统**: 浏览器通知和页面内通知
+
+## 🎯 主要功能
+
+### 代币信息监控
+- 实时价格查询和显示
+- 24小时价格变化率
+- 市值和交易量数据
+- 代币基本信息展示
+
+### 价格监控设置
+- 自定义买入/卖出价格
+- 监控频率设置
+- 自动交易开关
+- 实时监控状态
+
+### 交易功能
+- 自动买入/卖出
+- 钱包余额管理
+- 交易历史记录
+- 安全交易确认
+
+### 钱包管理
+- 手动输入私钥导入
+- 从文件导入私钥（支持JSON/Base58格式）
+- 安全的私钥处理（仅内存存储）
+- 钱包状态显示
+- 页面刷新后需要重新导入
+
+## 📦 安装和使用
+
+1. 克隆项目
 ```bash
-# 克隆项目
-git clone https://github.com/yourusername/Solana_Voyeur.git
-
-# 进入项目目录
+git clone https://github.com/HelloWorldImJoe/Solana_Voyeur.git
 cd Solana_Voyeur
-
-# 启动服务(也可以启动其他语言的http服务)
-python3 -m http.server 8080
 ```
 
-### 添加新功能
-
-1. Fork项目
-2. 创建功能分支: `git checkout -b feature/your-feature`
-3. 提交更改: `git commit -am 'Add some feature'`
-4. 推送到分支: `git push origin feature/your-feature`
-5. 创建Pull Request
-
-## 贡献
-
-欢迎贡献代码！请阅读[贡献指南](CONTRIBUTING.md)了解如何参与项目开发。
-
-1. Fork该项目
-2. 创建您的特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交您的更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 开启一个Pull Request
-
-## 许可证
-
-本项目采用MIT许可证，详情请见[LICENSE](LICENSE)文件。
-
+2. 启动本地服务器
+```bash
+python3 -m http.server 8000
 ```
+
+3. 打开浏览器访问
+```
+http://localhost:8000
+```
+
+## 🔧 配置说明
+
+### 代币地址
+默认使用 V2EX 代币地址进行演示：
+```
+9raUVuzeWUk53co63M4WXLWPWE4Xc6Lpn7RS9dnkpump
+```
+
+### 钱包导入
+支持两种方式导入钱包：
+
+1. **手动输入**：点击"读取钱包信息"按钮，输入私钥
+2. **文件导入**：点击"从文件导入钱包"按钮，选择私钥文件
+
+**重要说明**：钱包信息仅在内存中保存，页面刷新后需要重新导入，确保私钥安全。
+
+支持的私钥文件格式：
+- JSON格式：`{"secretKey": [1,2,3,...]}`
+- Base58格式：纯文本文件包含Base58编码的私钥
+
+详细格式说明请参考 `WALLET_FORMAT.md` 文件。
+
+### 监控设置
+- **买入价格**: 设置触发买入的价格阈值
+- **卖出价格**: 设置触发卖出的价格阈值
+- **监控频率**: 价格检查间隔（秒）
+- **自动交易**: 启用/禁用自动交易功能
+
+## 🎨 界面设计
+
+### 代币信息卡片
+- 现代化卡片设计
+- 渐变背景和阴影效果
+- 悬停动画和交互反馈
+- 清晰的信息层次结构
+
+### 价格显示
+- 大字体价格突出显示
+- 颜色编码的变化指示器
+- 实时更新状态
+- 货币符号和单位显示
+
+### 市场数据
+- 网格布局展示关键指标
+- 悬停效果和动画
+- 响应式适配
+- 数据格式化显示
+
+## 🔒 安全特性
+
+- 本地钱包管理
+- 安全的交易确认
+- 私钥仅在内存中保存，页面刷新后需要重新导入
+- 交易签名验证
+- 私钥文件格式支持（JSON/Base58）
+- 本地文件读取，不上传服务器
+- 无持久化存储，提高安全性
+
+## 📈 性能优化
+
+- 异步数据加载
+- 缓存机制
+- 响应式图片
+- 代码分割和压缩
+
+## 🤝 贡献指南
+
+欢迎提交 Issue 和 Pull Request！
+
+## 📄 许可证
+
 MIT License
 
-Copyright (c) 2023 Solana_Voyeur
+## 🙏 致谢
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-## 免责声明
-
-- 本工具仅供学习和研究目的使用
-- 使用本工具时请遵守当地法律法规
-- 开发者不对因使用本工具造成的任何损失负责
-- Solana是Solana基金会的商标，本项目与Solana基金会无任何关联
-
-## 联系方式
-
-如有问题或建议，请通过以下方式联系：
-
-- 提交Issue
-- 发送邮件至: [sdauwangzh@gmail.com]
+感谢所有为这个项目做出贡献的开发者！
