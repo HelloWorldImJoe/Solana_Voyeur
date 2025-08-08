@@ -285,38 +285,155 @@ async function fetchTokenData(tokenAddress) {
 
 // 显示代币信息
 function displayTokenInfo(tokenData) {
-    elements.currentPrice.textContent = `$${tokenData.price.toFixed(6)}`;
-    elements.tokenInfo.classList.remove('hidden');
+    // 设置代币基本信息
+    if (tokenData.tokenInfo) {
+        // 设置代币名称和符号
+        document.getElementById('tokenName').textContent = tokenData.tokenInfo.name || 'Unknown Token';
+        document.getElementById('tokenSymbol').textContent = tokenData.tokenInfo.symbol || '---';
 
-    // 显示价格信息
-    if (tokenData.phantomData && tokenData.phantomData.token) {
-        const phantomToken = tokenData.phantomData.token;
-
-        // 最后更新时间
-        if (phantomToken.lastUpdatedAt) {
-            const lastUpdated = new Date(phantomToken.lastUpdatedAt);
-            elements.lastUpdated.textContent = lastUpdated.toLocaleString('zh-CN');
+        // 设置代币图标
+        const logoElement = document.getElementById('tokenLogo');
+        if (tokenData.tokenInfo.logoUri) {
+            logoElement.src = tokenData.tokenInfo.logoUri;
         } else {
-            elements.lastUpdated.textContent = '-';
+            logoElement.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMzIiIGZpbGw9IiNGMEYwRjAiLz4KPHBhdGggZD0iTTQyIDI4TDM0IDIwTDMwIDE2TDI0IDE2TDE4IDIwTDEwIDI4TDEwIDM2TDE4IDQ0TDI0IDQ4TDI4IDUyTDM0IDQ4TDM4IDQ0TDQ2IDM2TDQ2IDI4TDQyIDI4Wk0zOCAzNkwzNCAzMkwyOCAzMkwzMiAzNkwzOCAzNloiIHN0cm9rZT0iIzM0OTg5YiIgc3Ryb2tlLXdpZHRoPSIyIi8+Cjwvc3ZnPgo=';
         }
 
-        // 价格变化
-        if (phantomToken.priceChange24h !== undefined) {
-            const change = phantomToken.priceChange24h;
-            const changeText = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
-            elements.priceChange24h.textContent = changeText;
-            elements.priceChange24h.className = `change-value ${change >= 0 ? 'price-up' : 'price-down'}`;
+        // 设置市值信息
+        if (tokenData.tokenInfo.marketCap) {
+            document.getElementById('marketCap').textContent = `$${(tokenData.tokenInfo.marketCap / 1000000).toFixed(2)}M`;
+            document.getElementById('marketCapContainer').style.display = 'flex';
         } else {
-            elements.priceChange24h.textContent = '-';
+            document.getElementById('marketCapContainer').style.display = 'none';
         }
 
-        console.log('显示价格信息:', phantomToken);
+        // 设置24小时交易量
+        if (tokenData.tokenInfo.volume24hUsd) {
+            document.getElementById('volume24h').textContent = `$${(tokenData.tokenInfo.volume24hUsd / 1000000).toFixed(2)}M`;
+            document.getElementById('volume24hContainer').style.display = 'flex';
+        } else {
+            document.getElementById('volume24hContainer').style.display = 'none';
+        }
     }
+
+    // 设置价格信息
+    elements.currentPrice.textContent = `$${tokenData.price.toFixed(6)}`;
+
+    // 价格变化
+    if (tokenData.priceChange24h !== undefined) {
+        const change = tokenData.priceChange24h;
+        const changeText = `${change >= 0 ? '+' : ''}${change.toFixed(2)}%`;
+        elements.priceChange24h.textContent = changeText;
+        elements.priceChange24h.className = `change-value ${change >= 0 ? 'price-up' : 'price-down'}`;
+    } else {
+        elements.priceChange24h.textContent = '-';
+    }
+
+    // 最后更新时间
+    if (tokenData.lastUpdatedAt) {
+        const lastUpdated = new Date(tokenData.lastUpdatedAt);
+        elements.lastUpdated.textContent = lastUpdated.toLocaleString('zh-CN');
+    } else {
+        elements.lastUpdated.textContent = '-';
+    }
+
+    // 显示代币信息模块
+    elements.tokenInfo.classList.remove('hidden');
 
     // 初始化历史价格图表
     if (tokenData.historyData && tokenData.historyData.history) {
         initializeHistoryChart(tokenData.historyData.history);
     }
+}
+
+// 获取代币数据
+async function fetchTokenData(tokenAddress) {
+    console.log('正在查询代币:', tokenAddress);
+
+    // 获取代币基本信息
+    let tokenInfo = null;
+    try {
+        console.log('获取Phantom代币信息...');
+        const tokenRes = await fetch(`${HOSTURL}/search/v1?query=${tokenAddress}&chainIds=solana:101&platform=extension&pageSize=1&searchTypes=fungible&searchContext=explore`, {
+            headers: {
+                'Accept': 'application/json',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            }
+        });
+
+        if (tokenRes.ok) {
+            const tokenData = await tokenRes.json();
+            if (tokenData.results && tokenData.results.length > 0) {
+                tokenInfo = tokenData.results[0].data.data;
+                console.log('Phantom代币信息响应:', tokenInfo);
+            }
+        }
+    } catch (e) {
+        console.error('Phantom代币信息API失败:', e);
+    }
+
+    // 获取价格数据
+    let priceData = null;
+    try {
+        console.log('获取Phantom价格数据...');
+        const priceRes = await fetch(`${HOSTURL}/price/v1/solana:101/address/${tokenAddress}`, {
+            headers: {
+                'Accept': 'application/json',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            }
+        });
+
+        if (priceRes.ok) {
+            priceData = await priceRes.json();
+            console.log('Phantom价格API响应:', priceData);
+        }
+    } catch (e) {
+        console.error('Phantom价格API失败:', e);
+    }
+
+    // 如果价格API失败，返回null
+    if (!priceData || !priceData.price) {
+        console.log('Phantom价格API失败，无法获取代币数据');
+        return null;
+    }
+
+    // 获取历史价格数据
+    let historyData = null;
+    try {
+        console.log('获取历史价格数据...');
+        const historyRes = await fetch(`${HOSTURL}/price-history/v1?token=solana:101/address:${tokenAddress}&type=1H`, {
+            headers: {
+                'Accept': 'application/json',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            }
+        });
+
+        if (historyRes.ok) {
+            historyData = await historyRes.json();
+            console.log('Phantom历史价格API响应:', historyData);
+        }
+    } catch (e) {
+        console.error('Phantom历史价格API失败:', e);
+    }
+
+    const result = {
+        price: priceData.price,
+        priceChange24h: priceData.priceChange24h,
+        lastUpdatedAt: priceData.lastUpdatedAt,
+        address: tokenAddress,
+        historyData: historyData,
+        phantomData: {
+            token: {
+                price: priceData.price,
+                priceChange24h: priceData.priceChange24h,
+                lastUpdatedAt: priceData.lastUpdatedAt
+            }
+        },
+        tokenInfo: tokenInfo // 添加代币基本信息
+    };
+
+    console.log('返回代币数据:', result);
+    return result;
 }
 
 // 初始化历史价格图表
@@ -859,7 +976,7 @@ async function sendTip() {
     try {
         // 解析.sol域名（如果需要）
         recipientAddress = await resolveSolDomain(recipientAddress);
-        
+
         // 验证Solana地址格式
         if (!isValidSolanaAddress(recipientAddress)) {
             showNotification('请输入有效的Solana地址', 'error');

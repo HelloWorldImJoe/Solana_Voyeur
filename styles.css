@@ -689,8 +689,8 @@ body {
 }
 
 .token-icon {
-    width: 24px;
-    height: 24px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background: linear-gradient(45deg, #3498db, #2980b9);
     display: flex;
@@ -887,3 +887,128 @@ body {
     width: 100%;
     margin-top: 10px;
 } 
+
+.token-info {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.token-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.token-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 16px;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.token-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.token-details h2 {
+    margin: 0 0 4px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+.token-symbol {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.price-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.current-price-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.price-label {
+    font-size: 16px;
+    color: #666;
+}
+
+.current-price {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+}
+
+.price-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.change-value {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.price-up {
+    color: #27ae60;
+}
+
+.price-down {
+    color: #e74c3c;
+}
+
+@media (max-width: 768px) {
+    .token-header {
+        flex-direction: row;
+    }
+    
+    .current-price {
+        font-size: 24px;
+    }
+    
+    .price-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .price-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .current-price {
+        font-size: 20px;
+    }
+}
